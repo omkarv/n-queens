@@ -38,7 +38,7 @@ window.findNQueensSolution = function(n) {
 
   console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
   return solution;
-};
+}; // return a matrix e.g. for n=3 : [[1,0,0], [0,0,1], [0,1,0]] (not a valid solution)
 
 
 // return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
@@ -46,5 +46,5 @@ window.countNQueensSolutions = function(n) {
   var solutionCount = undefined; //fixme
 
   console.log('Number of solutions for ' + n + ' queens:', solutionCount);
-  return solutionCount;
+  return solutionCount; // a number
 };

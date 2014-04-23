@@ -77,15 +77,37 @@
     // ROWS - run from left to right
     // --------------------------------------------------------------
     //
-    // test if a specific row on this board contains a conflict
+    // test if a specific row on this board contains a conflict (if more than 1 item)
     hasRowConflictAt: function(rowIndex) {
-      return false; // fixme
-    },
+      // accessing an array: matrix[row][column]
+      //var row = matrix[rowIndex];
+      // retrieve n this.attributes.n
+      var n = this.attributes.n;
+      var row = this.attributes[rowIndex];
+      var count = 0;
+      for (var colIndex = 0; colIndex < n; colIndex++) {
+        if(row[colIndex]) {
+          count++;
+        }
+      }
+      //iterate through every colIndex from 0 to n-1 on the given row
+        // check if there is a 1 in that
+          // if so return true
+      return count > 1 ? true: false; // fixme
+    }, // returns a boolean // should return undefined if rowIndex larger than n
 
     // test if any rows on this board contain conflicts
     hasAnyRowConflicts: function() {
+      //use hasRowConflictAt for every row
+      var n = this.attributes.n;
+      for (var row = 0; row < n; row++) {
+        if(this.hasRowConflictAt(row))
+        {
+          return true;
+        }
+      }
       return false; // fixme
-    },
+    }, //returns a boolean
 
 
 
@@ -93,14 +115,29 @@
     // --------------------------------------------------------------
     //
     // test if a specific column on this board contains a conflict
-    hasColConflictAt: function(colIndex) {
-      return false; // fixme
-    },
+    hasColConflictAt: function(colIndex) { // takes a number
+      var n = this.attributes.n;
+      var rows = this.attributes;
+      var count = 0;
+      for (var rowIndex = 0; rowIndex < n; rowIndex++) {
+        if(rows[rowIndex][colIndex]) {
+          count++;
+        }
+      }
+      return count > 1 ? true : false; // fixme
+    }, // returns a boolan
 
     // test if any columns on this board contain conflicts
     hasAnyColConflicts: function() {
+      var n = this.attributes.n;
+      for (var col = 0; col < n; col++) {
+        if(this.hasRowConflictAt(col))
+        {
+          return true;
+        }
+      }
       return false; // fixme
-    },
+    }, // returns boolean
 
 
 
@@ -146,3 +183,4 @@
   };
 
 }());
+
