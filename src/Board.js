@@ -154,7 +154,8 @@
       //move to next column, iterate diagonally...
       for(var startCol = 0; startCol < n; startCol++) { // outer loop will change the starting col from which we will traverse diagnoally
         count = 0;
-        for(var row = majorDiagonalColumnIndexAtFirstRow, col = startCol; col < n && row < n; row++, col++) {
+        for(var row = majorDiagonalColumnIndexAtFirstRow, col = startCol; col < n && row < n && row >= 0; row++, col++) {
+         // console.log(row);
           if(matrix[row][col]) {
             count++;
           }
