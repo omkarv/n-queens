@@ -106,7 +106,22 @@ var innerFunction = function(n) { // generates all array combinations
              result.push(topRow);
              for( var i = 0 ; i < n - 1; i++) {
                if(Array.isArray(innerSolutions[m])) {
-                result.push(innerSolutions[m][i].slice(n-col-1).concat(0).concat(innerSolutions[m][i].slice(col)));
+                // console.log('inner solution[m][i] m i:' + innerSolutions[m][i] + ' ' + m + ' ' + i );
+                // console.log('col is: ' + col + ' n is: ' + n);
+                // this next code inserts a 0 at the column at which we have inserted a rook at the top row, 
+                //the position of the zero will be at the end (last column) when col is at the end, so concat zero to end in that case
+                // if(col < n-1) { 
+                //   result.push(innerSolutions[m][i].slice(n-col-2, col).concat(0).concat(innerSolutions[m][i].slice(col)));
+                // } else { // if zero at end column
+                //    result.push(innerSolutions[m][i].slice(n-col-1, col).concat(0));
+                // }
+                if (col === 0) {
+                  result.push([0].concat(innerSolutions[m][i].slice(0)));
+                } else if( col === n-1) {
+                  result.push(innerSolutions[m][i].slice(0, col).concat(0));
+                } else {
+                  result.push(innerSolutions[m][i].slice(0, col).concat(0).concat(innerSolutions[m][i].slice(col, n)));
+                }
                } else {
                 if(col) {
                    result.push(innerSolutions.concat([0]));
@@ -115,9 +130,9 @@ var innerFunction = function(n) { // generates all array combinations
                 }
                }
              }
-             console.log('result is: ');
-             console.log(result);
-             results.push(result);  
+             // console.log('result is: ');
+             // console.log(result);
+             results.push(result);
           }
       }
       return results;
@@ -127,7 +142,7 @@ var innerFunction = function(n) { // generates all array combinations
 window.findNRooksSolution = function(n) {
   var solution = innerFunction(n)[0];
 
-  console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
+  //console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
   return solution;
 };
 //it is possible to use the n-rooks solution immediately, otherwise copy n-rooks
@@ -138,19 +153,22 @@ window.findNRooksSolution = function(n) {
 window.countNRooksSolutions = function(n) {
   var solutionCount = innerFunction(n).length; //fixme
 
-  console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
+ // console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
   return solutionCount;
 };
 
 window.findNQueensChessboards = function(n) {
   var rookBoards = innerFunction(n);
   //check if has any major or minor diagonal conflicts
-  var resultArray = [];
-  for(var board = 0; board < rookBoards.length; board++) {
-    if(!hasAnyMajorDiagonalConflicts(rookBoards[board], n) && !hasAnyMinorDiagonalConflicts(rookBoards[board],n)) {
-      resultArray.push(rookBoards[board]);
+  var resultArray = [];//
+  if(rookBoards.length > 1) {
+    for(var board = 0; board < rookBoards.length; board++) {
+      //console.log(rookBoards[board]);
+      if(!hasAnyMajorDiagonalConflicts(rookBoards[board], n) && !hasAnyMinorDiagonalConflicts(rookBoards[board],n)) {
+        resultArray.push(rookBoards[board]);
+      }
     }
-  }
+  } //else {} // need to deal with time when rookBoards
   // if neither push to results
   return resultArray;
 
@@ -161,18 +179,27 @@ window.findNQueensChessboards = function(n) {
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
 window.findNQueensSolution = function(n) {
-  var solution = undefined; //fixme
+  var solution = window.findNQueensChessboards(n);
+ // console.log('solution: ' + solution + ' for n = ' + n);
+  if(solution.length) {
+    solution = solution[0];
+  }
+  if (n === 0 || n === 1) {
+    solution = [1];
+  } 
 
-
-  console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
+  //console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
   return solution;
 }; // return a matrix e.g. for n=3 : [[1,0,0], [0,0,1], [0,1,0]] (not a valid solution)
 
 
 // return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
 window.countNQueensSolutions = function(n) {
-  var solutionCount = undefined; //fixme
+  var solutionCount = window.findNQueensChessboards(n).length; //fixme
+  if (n === 0 || n===1) {
+    solutionCount = 1;
+  } 
  
-  console.log('Number of solutions for ' + n + ' queens:', solutionCount);
+ // console.log('Number of solutions for ' + n + ' queens:', solutionCount);
   return solutionCount; // a number
 };
