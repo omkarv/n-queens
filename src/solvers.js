@@ -140,10 +140,16 @@ var innerFunction = function(n) { // generates all array combinations
 };
 
 window.findNRooksSolution = function(n) {
-  var solution = innerFunction(n)[0];
-
+  var solution = innerFunction(n);
+  if(Array.isArray(solution)) {
+    solution = solution[0];
+  } else {
+    var arr = [];
+    arr.push(solution);
+  }
+  
   //console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
-  return solution;
+  return [solution];
 };
 //it is possible to use the n-rooks solution immediately, otherwise copy n-rooks
 // and check for diagonals using a n-rooks from a base case of 4
